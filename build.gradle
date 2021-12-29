@@ -1,0 +1,85 @@
+plugins {
+    id 'net.minecraftforge.gradleutils' version '2.+'
+    id 'com.github.ben-manes.versions' version '0.39.0'
+    id 'org.javamodularity.moduleplugin' version '1.8.10'
+    id 'java-library'
+    id 'maven-publish'
+    id 'eclipse'
+}
+
+group 'org.mcmodlauncher'
+
+//version = gradleutils.getTagOffsetVersion()
+logger.lifecycle("Version: $version")
+
+repositories {
+    mavenLocal()
+    maven {
+        name 'forge'
+        url 'https://maven.minecraftforge.net/'
+    }
+}
+
+dependencies {
+    implementation('cpw.mods:modlauncher:9.0.+')
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(16)
+    withSourcesJar()
+}
+
+changelog {
+}
+
+jar {
+    //noinspection UnnecessaryQualifiedReference
+    manifest.attributes(
+            'Specification-Title': 'modlog4j',
+            'Specification-Vendor': 'forge',
+            'Specification-Version': '1', // We are version 1 of ourselves
+            'Implementation-Title': project.name,
+//            'Implementation-Version': "${project.version}+${System.getenv("BUILD_NUMBER") ?: 0}+${gradleutils.gitInfo.branch}.${gradleutils.gitInfo.abbreviatedId}",
+            'Implementation-Vendor': 'forge',
+//            'Implementation-Timestamp': java.time.Instant.now().toString(),
+//            'Git-Commit': gradleutils.gitInfo.abbreviatedId,
+//            'Git-Branch': gradleutils.gitInfo.branch,
+            'Build-Number': "${System.getenv("BUILD_NUMBER") ?: 0}",
+    )
+}
+
+artifacts {
+    archives jar
+    archives sourcesJar
+}
+
+publishing {
+    publications.register('mavenJava', MavenPublication) {
+        from components.java
+        pom {
+            name = 'Mod Log4J helper'
+            description = 'Log4J plugin to help format extended stacktraces'
+            url = 'https://github.com/McModLauncher/modlog4j'
+            scm {
+                url = 'https://github.com/McModLauncher/modlog4j'
+                connection = 'scm:git:git@github.com:McModLauncher/modlog4j.git'
+                developerConnection = 'scm:git:git@github.com:McModLauncher/modlog4j.git'
+            }
+            issueManagement {
+                system = 'github'
+                url = 'https://github.com/McModLauncher/modlog4j/issues'
+            }
+            developers {
+                developer {
+                    id = 'cpw'
+                    name = 'cpw'
+                }
+            }
+        }
+    }
+    repositories {
+        maven gradleutils.getPublishingForgeMaven()
+    }
+}
+
+
