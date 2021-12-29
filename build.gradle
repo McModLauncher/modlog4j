@@ -9,7 +9,7 @@ plugins {
 
 group 'org.mcmodlauncher'
 
-//version = gradleutils.getTagOffsetVersion()
+version = gradleutils.getTagOffsetVersion()
 logger.lifecycle("Version: $version")
 
 repositories {
@@ -31,6 +31,7 @@ java {
 }
 
 changelog {
+    fromCommit('1bcfe3c08042b476940a60d49a2acb962dd10fa8')
 }
 
 jar {
@@ -40,11 +41,11 @@ jar {
             'Specification-Vendor': 'forge',
             'Specification-Version': '1', // We are version 1 of ourselves
             'Implementation-Title': project.name,
-//            'Implementation-Version': "${project.version}+${System.getenv("BUILD_NUMBER") ?: 0}+${gradleutils.gitInfo.branch}.${gradleutils.gitInfo.abbreviatedId}",
+            'Implementation-Version': "${project.version}+${System.getenv("BUILD_NUMBER") ?: 0}+${gradleutils.gitInfo.branch}.${gradleutils.gitInfo.abbreviatedId}",
             'Implementation-Vendor': 'forge',
-//            'Implementation-Timestamp': java.time.Instant.now().toString(),
-//            'Git-Commit': gradleutils.gitInfo.abbreviatedId,
-//            'Git-Branch': gradleutils.gitInfo.branch,
+            'Implementation-Timestamp': java.time.Instant.now().toString(),
+            'Git-Commit': gradleutils.gitInfo.abbreviatedId,
+            'Git-Branch': gradleutils.gitInfo.branch,
             'Build-Number': "${System.getenv("BUILD_NUMBER") ?: 0}",
     )
 }
